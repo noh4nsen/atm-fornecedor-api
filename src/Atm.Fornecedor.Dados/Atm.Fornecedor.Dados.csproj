@@ -10,4 +10,7 @@
     <Folder Include="Repositories\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Atm.Fornecedor\Atm.Fornecedor.csproj" />
+  </ItemGroup>
 </Project>
