@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  atm.fornecedor.api:
+    image: ${DOCKER_REGISTRY-}atmfornecedorapi
+    build:
+      context: .
+      dockerfile: src/Atm.Fornecedor.Api/Dockerfile
