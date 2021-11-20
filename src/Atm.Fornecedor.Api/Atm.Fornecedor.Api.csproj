@@ -29,10 +29,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\" />
+    <Folder Include="Features\Fornecedor\" />
+    <Folder Include="Features\Produto\" />
     <Folder Include="Helpers\" />
-    <Folder Include="Extensions\" />
-    <Folder Include="Validation\" />
   </ItemGroup>
 
   <ItemGroup>
