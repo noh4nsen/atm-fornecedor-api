@@ -41,6 +41,7 @@ namespace Atm.Fornecedor.Api.Extensions
             services.AddSwaggerGen(options =>
             {
                 options.AddFluentValidationRules(); //Verificar se esta deprecado
+                
                 options.MapType<FileResult>(() => new OpenApiSchema { Type = "file" });
                 options.SwaggerDoc("v1",
                     new OpenApiInfo

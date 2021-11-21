@@ -3,8 +3,8 @@ version: '3.5'
 services:
   atm-fornecedor-api:
     build:
-      context: .
-      dockerfile: src/Atm.Fornecedor.Api/Dockerfile
+        context: .
+        dockerfile: src/Atm.Fornecedor.Api/Dockerfile
     environment:
           - ASPNETCORE_URLS=https://+443;http://+80
           - ASPNETCORE_HTTPS_PORT=443

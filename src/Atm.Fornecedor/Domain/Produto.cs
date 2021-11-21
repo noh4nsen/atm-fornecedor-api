@@ -11,7 +11,7 @@ namespace Atm.Fornecedor.Domain
         public int QuantidadeEstoque { get; set; }
         public decimal ValorUnitario { get; set; }
         public decimal ValorCobrado { get; set; }
-        public List<Fornecedor> Fornecedores { get; set; }
+        public Fornecedor Fornecedor { get; set; }
         public List<Guid> Orcamentos { get; set; }
     }
 }

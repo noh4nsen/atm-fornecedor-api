@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Atm.Fornecedor.Domain
+﻿namespace Atm.Fornecedor.Domain
 {
     public class Fornecedor : Entity
     {
@@ -9,6 +7,5 @@ namespace Atm.Fornecedor.Domain
         public string Telefone { get; set; }
         public string Email { get; set; }
         public string Tipo { get; set; }
-        public List<Produto> Produtos { get; set; }
     }
 }
