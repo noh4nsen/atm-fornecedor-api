@@ -1,6 +1,7 @@
 ﻿using Atm.Fornecedor.Api.Validation;
 using FluentValidation;
 using MediatR;
+using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
@@ -38,10 +39,9 @@ namespace Atm.Fornecedor.Api.Extensions
 
         public static void SetupSwagger(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddFluentValidationRulesToSwagger();
             services.AddSwaggerGen(options =>
-            {
-                options.AddFluentValidationRules(); //Verificar se esta deprecado
-                
+            {                
                 options.MapType<FileResult>(() => new OpenApiSchema { Type = "file" });
                 options.SwaggerDoc("v1",
                     new OpenApiInfo

@@ -11,6 +11,11 @@ namespace Atm.Fornecedor.Dados.Repositories
     {
         protected readonly IDbContext _context;
 
+        public Repository(DbContext context)
+        {
+            _context = context;
+        }
+
         public Task AddAsync(T entity)
         {
             throw new NotImplementedException();
