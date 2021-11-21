@@ -11,8 +11,8 @@ services:
         environment:
             - ASPNETCORE_ENVIRONMENT=Development
         ports:
-            - 5000:80
-            - 5001:443
+            - 5674:80
+            - 5675:443
         networks:
             - atm-marvin-web
 networks:

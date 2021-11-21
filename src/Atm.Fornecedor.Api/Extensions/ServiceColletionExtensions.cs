@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Swagger;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Text.Json.Serialization;
@@ -41,7 +40,7 @@ namespace Atm.Fornecedor.Api.Extensions
         {
             services.AddFluentValidationRulesToSwagger();
             services.AddSwaggerGen(options =>
-            {                
+            {
                 options.MapType<FileResult>(() => new OpenApiSchema { Type = "file" });
                 options.SwaggerDoc("v1",
                     new OpenApiInfo

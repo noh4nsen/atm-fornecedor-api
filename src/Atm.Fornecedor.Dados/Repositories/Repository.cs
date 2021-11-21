@@ -1,7 +1,9 @@
 ﻿using Atm.Fornecedor.Domain;
 using Atm.Fornecedor.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -16,59 +18,97 @@ namespace Atm.Fornecedor.Dados.Repositories
             _context = context;
         }
 
-        public Task AddAsync(T entity)
+        protected IQueryable<T> Query(params Expression<Func<T, object>>[] joins)
         {
-            throw new NotImplementedException();
+            var query = _context.Set<T>()
+                                .AsQueryable();
+            return joins == null ? query : joins.Aggregate(query, (current, include) => current.Include(include));
         }
 
-        public Task AddCollectionAsync(IEnumerable<T> entities)
+        public virtual async Task AddAsync(T entity)
         {
-            throw new NotImplementedException();
+            await _context.Set<T>()
+                          .AddAsync(SetAddData(entity))
+                          .ConfigureAwait(false);
         }
 
-        public Task<bool> ExistsAsync(Expression<Func<T, bool>> lambda)
+        private T SetAddData(T entity)
         {
-            throw new NotImplementedException();
+            SetInsertData(entity);
+            return entity;
         }
 
-        public Task<IEnumerable<T>> GetAsync(params Expression<Func<T, object>>[] joins)
+        public virtual async Task AddCollectionAsync(IEnumerable<T> entities)
         {
-            throw new NotImplementedException();
+            await _context.Set<T>()
+                          .AddRangeAsync(SetAddData(entities))
+                          .ConfigureAwait(false);
         }
 
-        public Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>> lambda, params Expression<Func<T, object>>[] joins)
+        private IEnumerable<T> SetAddData(IEnumerable<T> entities)
         {
-            throw new NotImplementedException();
+            return entities.Select(entity => { return SetAddData(entity); });
         }
 
-        public Task<T> GetFirstAsync(Expression<Func<T, bool>> lambda, params Expression<Func<T, object>>[] joins)
+        public virtual async Task<bool> ExistsAsync(Expression<Func<T, bool>> lambda)
         {
-            throw new NotImplementedException();
+            return await Query().AnyAsync(lambda);
         }
 
-        public Task RemoveAsync(T entity)
+        public virtual async Task<IEnumerable<T>> GetAsync(params Expression<Func<T, object>>[] joins)
         {
-            throw new NotImplementedException();
+            return await Query(joins).ToListAsync();
         }
 
-        public Task SaveChangesAsync()
+        public virtual async Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>> lambda, params Expression<Func<T, object>>[] joins)
         {
-            throw new NotImplementedException();
+            return await Query(joins).Where(lambda).ToListAsync();
+        }
+
+        public virtual async Task<T> GetFirstAsync(Expression<Func<T, bool>> lambda, params Expression<Func<T, object>>[] joins)
+        {
+            return await Query(joins).FirstOrDefaultAsync(lambda);
+        }
+
+        public virtual Task RemoveAsync(T entity)
+        {
+            _context.Set<T>().Remove(entity);
+            return Task.CompletedTask;
+        }
+
+        public virtual async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public void SetInsertData(Entity entity)
         {
-            throw new NotImplementedException();
+            entity.Id = Guid.NewGuid();
+            entity.DataCadastro = DateTime.Now;
+            entity.DataAtualizacao = null;
         }
 
-        public Task UpdateAsync(T entity)
+        public virtual Task UpdateAsync(T entity)
         {
-            throw new NotImplementedException();
+            _context.Set<T>().Update(SetUpdateData(entity));
+            return Task.CompletedTask;
         }
 
-        public Task UpdateCollectionAsync(IEnumerable<T> entities)
+        private T SetUpdateData(T entity)
         {
-            throw new NotImplementedException();
+            entity.DataAtualizacao = DateTime.Now;
+            return entity;
+        }
+
+        public virtual Task UpdateCollectionAsync(IEnumerable<T> entities)
+        {
+            _context.Set<T>().UpdateRange(SetUpdateData(entities));
+            return Task.CompletedTask;
+        }
+
+        private IEnumerable<T> SetUpdateData(IEnumerable<T> entities)
+        {
+            return entities.Select(entity => { return SetUpdateData(entity); });
         }
     }
 }

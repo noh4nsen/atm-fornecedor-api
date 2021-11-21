@@ -29,8 +29,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Fornecedor\" />
-    <Folder Include="Features\Produto\" />
+    <Folder Include="Features\Produto\Commands\" />
+    <Folder Include="Features\Produto\Queries\" />
     <Folder Include="Helpers\" />
   </ItemGroup>
 
