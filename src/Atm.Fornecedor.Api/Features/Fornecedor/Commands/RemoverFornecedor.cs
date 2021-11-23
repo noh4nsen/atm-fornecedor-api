@@ -37,10 +37,10 @@ namespace Atm.Fornecedor.Api.Features.Fornecedor.Commands
                 throw new ArgumentNullException("Erro ao processar requisição");
 
             Domain.Fornecedor entity = await _repositoryFornecedor.GetFirstAsync(f => f.Id.Equals(request.Id));
+
             await _validator.ValidateDataAsync(request, entity);
 
-            Domain.Produto produto = await _repositoryProduto.GetFirstAsync(p => p.Fornecedor.Equals(entity));
-            if (produto == null)
+            if (await _repositoryProduto.GetFirstAsync(p => p.FornecedorId.Equals(entity.Id)) == null)
                 await _repositoryFornecedor.RemoveAsync(entity);
             else
             {

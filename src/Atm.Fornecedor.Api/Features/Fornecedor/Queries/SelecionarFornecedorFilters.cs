@@ -27,12 +27,9 @@ namespace Atm.Fornecedor.Api.Features.Fornecedor.Queries
             if (request == null)
                 throw new ArgumentNullException("Erro ao processar requisição");
 
-            IEnumerable<Domain.Fornecedor> result;
-
-            if (string.IsNullOrEmpty(request.Nome))
-                result = await _repository.GetAsync();
-            else
-                result = await _repository.GetAsync(f => f.Nome.ToUpper().Contains(request.Nome.ToUpper()));
+            IEnumerable<Domain.Fornecedor> result = string.IsNullOrEmpty(request.Nome) 
+                                                ? await _repository.GetAsync() 
+                                                : await _repository.GetAsync(f => f.Nome.ToUpper().Contains(request.Nome.ToUpper()));
 
             return result.ToQueryResponse();
         }

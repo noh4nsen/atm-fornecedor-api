@@ -14,7 +14,8 @@ namespace Atm.Fornecedor.Api.Extensions.Entities
                 QuantidadeEstoque = request.QuantidadeEstoque,
                 ValorUnitario = request.ValorUnitario,
                 ValorCobrado = request.ValorCobrado,
-                FornecedorId = request.FornecedorId
+                Fornecedor = request.Fornecedor,
+                FornecedorId = request.Fornecedor.Id
             };
         }
 

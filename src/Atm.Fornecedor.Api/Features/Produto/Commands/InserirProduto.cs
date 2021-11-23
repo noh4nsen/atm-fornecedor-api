@@ -18,7 +18,7 @@ namespace Atm.Fornecedor.Api.Features.Produto.Commands
         public int QuantidadeEstoque { get; set; }
         public decimal ValorUnitario { get; set; }
         public decimal ValorCobrado { get; set; }
-        public Guid FornecedorId { get; set; }
+        public Domain.Fornecedor Fornecedor { get; set; }
     }
 
     public class InserirProdutoCommandResponse
@@ -47,7 +47,7 @@ namespace Atm.Fornecedor.Api.Features.Produto.Commands
 
             Domain.Produto entity = request.ToDomain();
 
-            await _validator.ValidateDataAsync(request, await _repositoryFornecedor.GetFirstAsync(f => f.Id.Equals(request.FornecedorId)));
+            await _validator.ValidateDataAsync(request, await _repositoryFornecedor.GetFirstAsync(f => f.Id.Equals(request.Fornecedor.Id)));
 
 
             await _repository.AddAsync(entity);
@@ -73,15 +73,15 @@ namespace Atm.Fornecedor.Api.Features.Produto.Commands
                                         .WithMessage("Valor cobrado é obrigatório")
                                         .GreaterThan(0)
                                         .WithMessage("Valor cobrado deve ser maior que zero");
-            RuleFor(p => p.FornecedorId).NotEqual(Guid.Empty)
+            RuleFor(p => p.Fornecedor.Id).NotEqual(Guid.Empty)
                                         .WithMessage("Id de Fornecedor é obrigatório");
         }
 
         public async Task ValidateDataAsync(InserirProdutoCommand request, Domain.Fornecedor fornecedor)
         {
-            RuleFor(r => r.FornecedorId)
+            RuleFor(r => r.Fornecedor.Id)
                 .Must(f => { return fornecedor != null; })
-                .WithMessage($"Fornecedor de id {request.FornecedorId} não encontrado.");
+                .WithMessage($"Fornecedor de id {request.Fornecedor.Id} não encontrado.");
             await this.ValidateAndThrowAsync(request);
         }
     }
