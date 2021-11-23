@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Atm.Fornecedor.Domain
 {
@@ -11,6 +10,7 @@ namespace Atm.Fornecedor.Domain
         public int QuantidadeEstoque { get; set; }
         public decimal ValorUnitario { get; set; }
         public decimal ValorCobrado { get; set; }
+        public Guid FornecedorId { get; set; }
         public Fornecedor Fornecedor { get; set; }
     }
 }
