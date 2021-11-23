@@ -1,6 +1,7 @@
 ﻿using Atm.Fornecedor.Api.Features.Fornecedor.Commands;
 using Atm.Fornecedor.Api.Features.Fornecedor.Queries;
 using System;
+using System.Collections.Generic;
 
 namespace Atm.Fornecedor.Api.Extensions.Entities
 {
@@ -66,6 +67,14 @@ namespace Atm.Fornecedor.Api.Extensions.Entities
             {
                 Id = entity.Id
             };
+        }
+
+        public static IEnumerable<SelecionarFornecedorQueryResponse> ToQueryResponse(this IEnumerable<Domain.Fornecedor> list)
+        {
+            IList<SelecionarFornecedorQueryResponse> response = new List<SelecionarFornecedorQueryResponse>();
+            foreach (var entity in list)
+                response.Add(entity.ToQueryResponse());
+            return response;
         }
     }
 }

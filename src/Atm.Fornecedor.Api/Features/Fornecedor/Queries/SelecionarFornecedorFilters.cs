@@ -1,21 +1,40 @@
-﻿using MediatR;
+﻿using Atm.Fornecedor.Api.Extensions.Entities;
+using Atm.Fornecedor.Repositories;
+using MediatR;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Atm.Fornecedor.Api.Features.Fornecedor.Queries
 {
-    public class SelecionarFornecedorFiltersQuery : IRequest<SelecionarFornecedorQueryResponse>
+    public class SelecionarFornecedorFiltersQuery : IRequest<IEnumerable<SelecionarFornecedorQueryResponse>>
     {
+        public string Nome { get; set; }
     }
 
-    public class SelecionarFornecedorFiltersQueryHanbdler : IRequestHandler<SelecionarFornecedorFiltersQuery, SelecionarFornecedorQueryResponse>
+    public class SelecionarFornecedorFiltersQueryHandler : IRequestHandler<SelecionarFornecedorFiltersQuery, IEnumerable<SelecionarFornecedorQueryResponse>>
     {
-        public Task<SelecionarFornecedorQueryResponse> Handle(SelecionarFornecedorFiltersQuery request, CancellationToken cancellationToken)
+        private readonly IRepository<Domain.Fornecedor> _repository;
+
+        public SelecionarFornecedorFiltersQueryHandler(IRepository<Domain.Fornecedor> repository)
         {
-            throw new NotImplementedException();
+            _repository = repository;
+        }
+
+        public async Task<IEnumerable<SelecionarFornecedorQueryResponse>> Handle(SelecionarFornecedorFiltersQuery request, CancellationToken cancellationToken)
+        {
+            if (request == null)
+                throw new ArgumentNullException("Erro ao processar requisição");
+
+            IEnumerable<Domain.Fornecedor> result;
+
+            if (string.IsNullOrEmpty(request.Nome))
+                result = await _repository.GetAsync();
+            else
+                result = await _repository.GetAsync(f => f.Nome.ToUpper().Contains(request.Nome.ToUpper()));
+
+            return result.ToQueryResponse();
         }
     }
 }

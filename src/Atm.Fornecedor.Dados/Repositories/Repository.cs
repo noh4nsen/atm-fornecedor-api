@@ -38,23 +38,6 @@ namespace Atm.Fornecedor.Dados.Repositories
             return entity;
         }
 
-        public virtual async Task AddCollectionAsync(IEnumerable<T> entities)
-        {
-            await _context.Set<T>()
-                          .AddRangeAsync(SetAddData(entities))
-                          .ConfigureAwait(false);
-        }
-
-        private IEnumerable<T> SetAddData(IEnumerable<T> entities)
-        {
-            return entities.Select(entity => { return SetAddData(entity); });
-        }
-
-        public virtual async Task<bool> ExistsAsync(Expression<Func<T, bool>> lambda)
-        {
-            return await Query().AnyAsync(lambda);
-        }
-
         public virtual async Task<IEnumerable<T>> GetAsync(params Expression<Func<T, object>>[] joins)
         {
             return await Query(joins).ToListAsync();
@@ -98,17 +81,6 @@ namespace Atm.Fornecedor.Dados.Repositories
         {
             entity.DataAtualizacao = DateTime.Now;
             return entity;
-        }
-
-        public virtual Task UpdateCollectionAsync(IEnumerable<T> entities)
-        {
-            _context.Set<T>().UpdateRange(SetUpdateData(entities));
-            return Task.CompletedTask;
-        }
-
-        private IEnumerable<T> SetUpdateData(IEnumerable<T> entities)
-        {
-            return entities.Select(entity => { return SetUpdateData(entity); });
         }
     }
 }
