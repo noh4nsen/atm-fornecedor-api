@@ -1,8 +1,21 @@
-version: '3.4'
+version: '3.5'
 
 services:
-  atm.fornecedor.api:
-    image: ${DOCKER_REGISTRY-}atmfornecedorapi
-    build:
-      context: .
-      dockerfile: src/Atm.Fornecedor.Api/Dockerfile
+    atm-fornecedor-api:
+        image: atm-fornecedor-api
+        build:
+            context: .
+            dockerfile: src/Atm.Fornecedor.Api/Dockerfile
+        environment:
+            - ASPNETCORE_URLS=https://+443;http://+80
+            - ASPNETCORE_HTTPS_PORT=443
+            - ASPNETCORE_HTTP_PORT=80
+            - Kestrel__Certificates__Default__Path=${HTTPS_CERTIFICATE_PATH}
+            - Kestrel__Certificates__Default__Password=${HTTPS_CERTIFICATE_PASSWORD}
+        networks: 
+            - postgres-net
+networks:
+    postgres-net:
+        driver: bridge
+        external: true
+        name: postgres-net
