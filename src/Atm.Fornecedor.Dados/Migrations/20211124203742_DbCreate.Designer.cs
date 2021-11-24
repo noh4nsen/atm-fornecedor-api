@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Atm.Fornecedor.Dados.Migrations
 {
     [DbContext(typeof(DbContext))]
-    [Migration("20211124042718_DbCreate")]
+    [Migration("20211124203742_DbCreate")]
     partial class DbCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,9 +26,6 @@ namespace Atm.Fornecedor.Dados.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
-
-                    b.Property<bool>("Ativo")
-                        .HasColumnType("boolean");
 
                     b.Property<string>("Cnpj")
                         .HasMaxLength(14)

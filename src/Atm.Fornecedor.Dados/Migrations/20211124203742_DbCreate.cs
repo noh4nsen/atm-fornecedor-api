@@ -17,7 +17,6 @@ namespace Atm.Fornecedor.Dados.Migrations
                     Telefone = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: true),
                     Email = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     Tipo = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: true),
-                    Ativo = table.Column<bool>(type: "boolean", nullable: false),
                     DataCadastro = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     DataAtualizacao = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },

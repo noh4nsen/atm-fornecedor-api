@@ -25,9 +25,6 @@ namespace Atm.Fornecedor.Dados.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<bool>("Ativo")
-                        .HasColumnType("boolean");
-
                     b.Property<string>("Cnpj")
                         .HasMaxLength(14)
                         .HasColumnType("character varying(14)");

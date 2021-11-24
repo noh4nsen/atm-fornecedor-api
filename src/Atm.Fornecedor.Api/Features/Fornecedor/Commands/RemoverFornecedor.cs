@@ -39,14 +39,10 @@ namespace Atm.Fornecedor.Api.Features.Fornecedor.Commands
             Domain.Fornecedor entity = await _repositoryFornecedor.GetFirstAsync(f => f.Id.Equals(request.Id));
 
             await _validator.ValidateDataAsync(request, entity);
+            await _validator.ValidateDataAsync(request, await _repositoryProduto.GetFirstAsync(p => p.FornecedorId.Equals(entity.Id)));
 
-            if (await _repositoryProduto.GetFirstAsync(p => p.FornecedorId.Equals(entity.Id)) == null)
-                await _repositoryFornecedor.RemoveAsync(entity);
-            else
-            {
-                entity.Ativo = false;
-                await _repositoryFornecedor.UpdateAsync(entity);
-            }
+            await _repositoryFornecedor.RemoveAsync(entity);
+
 
             await _repositoryFornecedor.SaveChangesAsync();
 
@@ -68,6 +64,14 @@ namespace Atm.Fornecedor.Api.Features.Fornecedor.Commands
             RuleFor(r => r.Id)
                .Must(f => { return entity != null; })
                .WithMessage($"Fornecedor de id {request.Id} não encontrado.");
+            await this.ValidateAndThrowAsync(request);
+        }
+
+        public async Task ValidateDataAsync(RemoverFornecedorCommand request, Domain.Produto entity)
+        {
+            RuleFor(r => r.Id)
+                .Must(p => { return entity == null; })
+                .WithMessage($"Fornecedor de id {request.Id} possui produtos vinculados.");
             await this.ValidateAndThrowAsync(request);
         }
     }

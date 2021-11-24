@@ -30,8 +30,7 @@ namespace Atm.Fornecedor.Api.Extensions.Entities
                 Cnpj = request.Cnpj,
                 Telefone = request.Telefone,
                 Email = request.Email,
-                Tipo = request.Tipo,
-                Ativo = true
+                Tipo = request.Tipo
             };
         }
 
