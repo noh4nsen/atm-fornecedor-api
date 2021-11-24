@@ -29,7 +29,8 @@ namespace Atm.Fornecedor.Dados.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("Cnpj")
-                        .HasColumnType("text");
+                        .HasMaxLength(14)
+                        .HasColumnType("character varying(14)");
 
                     b.Property<DateTime?>("DataAtualizacao")
                         .HasColumnType("timestamp without time zone");
@@ -38,16 +39,21 @@ namespace Atm.Fornecedor.Dados.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Email")
-                        .HasColumnType("text");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<string>("Nome")
-                        .HasColumnType("text");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<string>("Telefone")
-                        .HasColumnType("text");
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
 
                     b.Property<string>("Tipo")
-                        .HasColumnType("text");
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
 
                     b.HasKey("Id")
                         .HasName("Fornecedor_PK");
@@ -68,19 +74,24 @@ namespace Atm.Fornecedor.Dados.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Descricao")
-                        .HasColumnType("text");
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
-                    b.Property<Guid?>("FornecedorId")
+                    b.Property<Guid>("FornecedorId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Nome")
-                        .HasColumnType("text");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<int>("QuantidadeEstoque")
                         .HasColumnType("integer");
 
                     b.Property<string>("Tipo")
-                        .HasColumnType("text");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<decimal>("ValorCobrado")
                         .HasColumnType("numeric");
@@ -102,7 +113,9 @@ namespace Atm.Fornecedor.Dados.Migrations
                     b.HasOne("Atm.Fornecedor.Domain.Fornecedor", "Fornecedor")
                         .WithMany()
                         .HasForeignKey("FornecedorId")
-                        .HasConstraintName("Forneced_Produto_ForneceId_FK");
+                        .HasConstraintName("Forneced_Produto_ForneceId_FK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Fornecedor");
                 });

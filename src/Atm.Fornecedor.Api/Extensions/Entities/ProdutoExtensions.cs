@@ -1,10 +1,27 @@
 ﻿using Atm.Fornecedor.Api.Features.Produto.Commands;
+using Atm.Fornecedor.Api.Features.Produto.Queries;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Atm.Fornecedor.Api.Extensions.Entities
 {
     public static class ProdutoExtensions
     {
+        public static SelecionarProdutoQueryResponse ToQueryResponse(this Domain.Produto entity, Domain.Fornecedor fornecedor)
+        {
+            return new SelecionarProdutoQueryResponse()
+            {
+                Id = entity.Id,
+                Nome = entity.Nome,
+                Tipo = entity.Tipo,
+                Descricao = entity.Descricao,
+                QuantidadeEstoque = entity.QuantidadeEstoque,
+                ValorUnitario = entity.ValorUnitario,
+                ValorCobrado = entity.ValorCobrado,
+                Fonecedor = fornecedor
+            };
+        }
         public static Domain.Produto ToDomain(this InserirProdutoCommand request)
         {
             return new Domain.Produto()
@@ -15,7 +32,6 @@ namespace Atm.Fornecedor.Api.Extensions.Entities
                 QuantidadeEstoque = request.QuantidadeEstoque,
                 ValorUnitario = request.ValorUnitario,
                 ValorCobrado = request.ValorCobrado,
-                Fornecedor = request.Fornecedor,
                 FornecedorId = request.Fornecedor.Id
             };
         }
@@ -34,9 +50,9 @@ namespace Atm.Fornecedor.Api.Extensions.Entities
             entity.Nome = request.Nome;
             entity.Tipo = request.Tipo;
             entity.Descricao = request.Descricao;
+            entity.QuantidadeEstoque = request.QuantidadeEstoque;
             entity.ValorUnitario = request.ValorUnitario;
             entity.ValorCobrado = request.ValorCobrado;
-            entity.Fornecedor = request.Fornecedor;
             entity.FornecedorId = request.Fornecedor.Id;
         }
 
@@ -46,6 +62,22 @@ namespace Atm.Fornecedor.Api.Extensions.Entities
             {
                 DataAtualizacao = (DateTime)(entity.DataAtualizacao)
             };
+        }
+
+        public static RemoverProdutoCommandResponse ToRemoveResponse(this Domain.Produto entity)
+        {
+            return new RemoverProdutoCommandResponse()
+            {
+                Id = entity.Id
+            };
+        }
+
+        public static IEnumerable<SelecionarProdutoQueryResponse> ToQueryResponse(this IEnumerable<Domain.Produto> listaProdutos, IEnumerable<Domain.Fornecedor> listaFornecedores)
+        {
+            IList<SelecionarProdutoQueryResponse> response = new List<SelecionarProdutoQueryResponse>();
+            foreach (var entity in listaProdutos.Zip(listaFornecedores, Tuple.Create))
+                response.Add(entity.Item1.ToQueryResponse(entity.Item2));
+            return response;
         }
     }
 }

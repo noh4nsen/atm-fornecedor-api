@@ -29,10 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Helpers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Atm.Fornecedor.Dados\Atm.Fornecedor.Dados.csproj" />
     <ProjectReference Include="..\Atm.Fornecedor\Atm.Fornecedor.csproj" />
   </ItemGroup>  

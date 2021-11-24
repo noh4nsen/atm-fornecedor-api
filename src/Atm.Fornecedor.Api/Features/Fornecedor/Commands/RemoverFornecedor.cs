@@ -56,6 +56,12 @@ namespace Atm.Fornecedor.Api.Features.Fornecedor.Commands
 
     public class RemoverFornecedorCommandValidator : AbstractValidator<RemoverFornecedorCommand>
     {
+        public RemoverFornecedorCommandValidator()
+        {
+            RuleFor(f => f.Id)
+                .NotEqual(Guid.Empty)
+                .WithMessage("Id de fornecedor é obrigatório");
+        }
 
         public async Task ValidateDataAsync(RemoverFornecedorCommand request, Domain.Fornecedor entity)
         {

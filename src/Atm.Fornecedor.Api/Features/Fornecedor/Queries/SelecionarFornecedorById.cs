@@ -54,14 +54,14 @@ namespace Atm.Fornecedor.Api.Features.Fornecedor.Queries
         {
             RuleFor(f => f.Id)
                     .NotEqual(Guid.Empty)
-                    .WithMessage("Id inválido");
+                    .WithMessage("Id inválido.");
         }
 
         public async Task ValidateDataAsync(SelecionarFornecedorByIdQuery request, Domain.Fornecedor entity)
         {
             RuleFor(f => f.Id)
                     .Must(m => { return entity != null; })
-                    .WithMessage($"Fornecedor de id {request.Id} não encontrado");
+                    .WithMessage($"Fornecedor de id {request.Id} não encontrado.");
             await this.ValidateAndThrowAsync(request);
         }
     }

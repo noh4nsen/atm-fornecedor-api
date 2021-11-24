@@ -1,4 +1,5 @@
 ﻿using Atm.Fornecedor.Api.Features.Produto.Commands;
+using Atm.Fornecedor.Api.Features.Produto.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -17,10 +18,34 @@ namespace Atm.Fornecedor.Api.Features.Produto
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult> Get(Guid id)
+        {
+            return Ok(await _mediator.Send(new SelecionarProdutoByIdQuery { Id = id }));
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> Get([FromQuery] SelecionarProdutoFiltersQuery request)
+        {
+            return Ok(await _mediator.Send(request));
+        }
+
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] InserirProdutoCommand request)
         {
             return Ok(await _mediator.Send(request));
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> Put([FromBody] AtualizarProdutoCommand request)
+        {
+            return Ok(await _mediator.Send(request));
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(Guid id)
+        {
+            return Ok(await _mediator.Send(new RemoverProdutoCommand { Id = id }));
         }
     }
 }

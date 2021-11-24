@@ -12,11 +12,11 @@ namespace Atm.Fornecedor.Dados.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Nome = table.Column<string>(type: "text", nullable: true),
-                    Cnpj = table.Column<string>(type: "text", nullable: true),
-                    Telefone = table.Column<string>(type: "text", nullable: true),
-                    Email = table.Column<string>(type: "text", nullable: true),
-                    Tipo = table.Column<string>(type: "text", nullable: true),
+                    Nome = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Cnpj = table.Column<string>(type: "character varying(14)", maxLength: 14, nullable: true),
+                    Telefone = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: true),
+                    Email = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    Tipo = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: true),
                     Ativo = table.Column<bool>(type: "boolean", nullable: false),
                     DataCadastro = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     DataAtualizacao = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
@@ -31,13 +31,13 @@ namespace Atm.Fornecedor.Dados.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Nome = table.Column<string>(type: "text", nullable: true),
-                    Tipo = table.Column<string>(type: "text", nullable: true),
-                    Descricao = table.Column<string>(type: "text", nullable: true),
+                    Nome = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Tipo = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Descricao = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
                     QuantidadeEstoque = table.Column<int>(type: "integer", nullable: false),
                     ValorUnitario = table.Column<decimal>(type: "numeric", nullable: false),
                     ValorCobrado = table.Column<decimal>(type: "numeric", nullable: false),
-                    FornecedorId = table.Column<Guid>(type: "uuid", nullable: true),
+                    FornecedorId = table.Column<Guid>(type: "uuid", nullable: false),
                     DataCadastro = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     DataAtualizacao = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
@@ -49,7 +49,7 @@ namespace Atm.Fornecedor.Dados.Migrations
                         column: x => x.FornecedorId,
                         principalTable: "Fornecedor",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

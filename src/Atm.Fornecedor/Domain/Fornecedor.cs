@@ -1,4 +1,6 @@
-﻿namespace Atm.Fornecedor.Domain
+﻿using System.Collections.Generic;
+
+namespace Atm.Fornecedor.Domain
 {
     public class Fornecedor : Entity
     {
