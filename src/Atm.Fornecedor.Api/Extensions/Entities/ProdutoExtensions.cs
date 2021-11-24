@@ -1,4 +1,5 @@
 ﻿using Atm.Fornecedor.Api.Features.Produto.Commands;
+using System;
 
 namespace Atm.Fornecedor.Api.Extensions.Entities
 {
@@ -25,6 +26,25 @@ namespace Atm.Fornecedor.Api.Extensions.Entities
             {
                 Id = entity.Id,
                 DataCadastro = entity.DataCadastro
+            };
+        }
+
+        public static void Update(this AtualizarProdutoCommand request, Domain.Produto entity)
+        {
+            entity.Nome = request.Nome;
+            entity.Tipo = request.Tipo;
+            entity.Descricao = request.Descricao;
+            entity.ValorUnitario = request.ValorUnitario;
+            entity.ValorCobrado = request.ValorCobrado;
+            entity.Fornecedor = request.Fornecedor;
+            entity.FornecedorId = request.Fornecedor.Id;
+        }
+
+        public static AtualizarProdutoCommandResponse ToUpdateResponse(this Domain.Produto entity)
+        {
+            return new AtualizarProdutoCommandResponse()
+            {
+                DataAtualizacao = (DateTime)(entity.DataAtualizacao)
             };
         }
     }

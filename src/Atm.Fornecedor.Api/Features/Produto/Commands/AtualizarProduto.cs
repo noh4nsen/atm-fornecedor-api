@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace Atm.Fornecedor.Api.Features.Produto.Commands
 {
-    public class InserirProdutoCommand : IRequest<InserirProdutoCommandResponse>
+    public class AtualizarProdutoCommand : IRequest<AtualizarProdutoCommandResponse>
     {
+        public Guid Id { get; set; }
         public string Nome { get; set; }
         public string Tipo { get; set; }
         public string Descricao { get; set; }
@@ -19,45 +20,46 @@ namespace Atm.Fornecedor.Api.Features.Produto.Commands
         public Domain.Fornecedor Fornecedor { get; set; }
     }
 
-    public class InserirProdutoCommandResponse
+    public class AtualizarProdutoCommandResponse
     {
-        public Guid Id { get; set; }
-        public DateTime DataCadastro { get; set; }
+        public DateTime DataAtualizacao { get; set; }
     }
 
-    public class InserirProdutoCommandHandler : IRequestHandler<InserirProdutoCommand, InserirProdutoCommandResponse>
+    public class AtualizarProdutoCommandHandler : IRequestHandler<AtualizarProdutoCommand, AtualizarProdutoCommandResponse>
     {
         private readonly IRepository<Domain.Produto> _repository;
         private readonly IRepository<Domain.Fornecedor> _repositoryFornecedor;
-        private readonly InserirProdutoCommandValidator _validator;
+        private readonly AtualizarProdutoCommandValidator _validator;
 
-        public InserirProdutoCommandHandler(IRepository<Domain.Produto> repository, IRepository<Domain.Fornecedor> repositoryFornecedor, InserirProdutoCommandValidator validator)
+        public AtualizarProdutoCommandHandler(IRepository<Domain.Produto> repository, IRepository<Domain.Fornecedor> repositoryFornecedor, AtualizarProdutoCommandValidator validator)
         {
             _repository = repository;
             _repositoryFornecedor = repositoryFornecedor;
             _validator = validator;
         }
 
-        public async Task<InserirProdutoCommandResponse> Handle(InserirProdutoCommand request, CancellationToken cancellationToken)
+        public async Task<AtualizarProdutoCommandResponse> Handle(AtualizarProdutoCommand request, CancellationToken cancellationToken)
         {
             if (request == null)
                 throw new ArgumentNullException("Erro ao processar requisição");
 
-            Domain.Produto entity = request.ToDomain();
+            Domain.Produto entity = await _repository.GetFirstAsync(p => p.Id.Equals(request.Id));
 
-            await _validator.ValidateDataAsync(request, await _repositoryFornecedor.GetFirstAsync(f => f.Id.Equals(request.Fornecedor.Id)));
+            await _validator.ValidateDataAsync(request, entity);
+            await _validator.ValidateFornecedorAsync(request, await _repositoryFornecedor.GetFirstAsync(f => f.Id.Equals(request.Fornecedor.Id)));
 
+            request.Update(entity);
 
-            await _repository.AddAsync(entity);
+            await _repository.UpdateAsync(entity);
             await _repository.SaveChangesAsync();
 
-            return entity.ToInsertResponse();
+            return entity.ToUpdateResponse();
         }
     }
 
-    public class InserirProdutoCommandValidator : AbstractValidator<InserirProdutoCommand>
+    public class AtualizarProdutoCommandValidator : AbstractValidator<AtualizarProdutoCommand>
     {
-        public InserirProdutoCommandValidator()
+        public AtualizarProdutoCommandValidator()
         {
             RuleFor(p => p.Nome).NotEmpty()
                                 .WithMessage("Nome de produto é obrigatório");
@@ -75,11 +77,19 @@ namespace Atm.Fornecedor.Api.Features.Produto.Commands
                                         .WithMessage("Id de Fornecedor é obrigatório");
         }
 
-        public async Task ValidateDataAsync(InserirProdutoCommand request, Domain.Fornecedor fornecedor)
+        public async Task ValidateDataAsync(AtualizarProdutoCommand request, Domain.Produto entity)
         {
-            RuleFor(r => r.Fornecedor.Id)
-                .Must(f => { return fornecedor != null; })
-                .WithMessage($"Fornecedor de id {request.Fornecedor.Id} não encontrado.");
+            RuleFor(r => r.Id)
+                .Must(p => { return entity != null; })
+                .WithMessage($"Produto de id {request.Id} não encontrado.");
+            await this.ValidateAndThrowAsync(request);
+        }
+
+        public async Task ValidateFornecedorAsync(AtualizarProdutoCommand request, Domain.Fornecedor fornecedor)
+        {
+            RuleFor(r => r.Id)
+                .Must(p => { return fornecedor != null; })
+                .WithMessage($"Fornecedor de id {fornecedor.Id} não encontrado.");
             await this.ValidateAndThrowAsync(request);
         }
     }

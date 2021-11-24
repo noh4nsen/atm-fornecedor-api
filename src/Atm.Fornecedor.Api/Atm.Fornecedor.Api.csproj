@@ -29,7 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Produto\Queries\" />
     <Folder Include="Helpers\" />
   </ItemGroup>
 
