@@ -13,10 +13,3 @@ services:
         ports:
             - 5674:80
             - 5675:443
-        networks:
-            - atm-marvin-web
-networks:
-    atm-marvin-web:
-        driver: bridge
-        external: true
-        name: atm-marvin-web
