@@ -3,6 +3,7 @@ version: '3.5'
 services:
     atm-fornecedor-api:
         image: atm-fornecedor-api
+        restart: always
         build:
             context: .
             dockerfile: src/Atm.Fornecedor.Api/Dockerfile
