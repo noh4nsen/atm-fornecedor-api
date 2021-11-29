@@ -27,6 +27,7 @@ namespace Atm.Fornecedor.Api
             services.SetupDatabase(Configuration);
             services.SetupSwagger(Configuration);
             services.SetupFluentValidation(GetType().Assembly);
+            services.AddAutoMapper(GetType().Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,5 +1,6 @@
 ﻿using Atm.Fornecedor.Api.Extensions.Entities;
 using Atm.Fornecedor.Repositories;
+using AutoMapper;
 using FluentValidation;
 using MediatR;
 using System;
@@ -30,12 +31,14 @@ namespace Atm.Fornecedor.Api.Features.Produto.Queries
         private readonly IRepository<Domain.Produto> _repositoryProduto;
         private readonly IRepository<Domain.Fornecedor> _repositoryFornecedor;
         private readonly SelecionarProdutoByIdQueryValidator _validator;
+        private readonly IMapper _mapper;
 
-        public SelecionarProdutoByIdQueryHandler(IRepository<Domain.Produto> repositoryProduto, IRepository<Domain.Fornecedor> repositoryFornecedor, SelecionarProdutoByIdQueryValidator validator)
+        public SelecionarProdutoByIdQueryHandler(IRepository<Domain.Produto> repositoryProduto, IRepository<Domain.Fornecedor> repositoryFornecedor, SelecionarProdutoByIdQueryValidator validator, IMapper mapper)
         {
             _repositoryProduto = repositoryProduto;
             _repositoryFornecedor = repositoryFornecedor;
             _validator = validator;
+            _mapper = mapper;
         }
 
         public async Task<SelecionarProdutoQueryResponse> Handle(SelecionarProdutoByIdQuery request, CancellationToken cancellationToken)
@@ -47,6 +50,8 @@ namespace Atm.Fornecedor.Api.Features.Produto.Queries
             await _validator.ValidateDataAsync(request, entity);
 
             Domain.Fornecedor fornecedor = await _repositoryFornecedor.GetFirstAsync(f => f.Id.Equals(entity.FornecedorId));
+
+            //var teste = _mapper.Map<SelecionarProdutoQueryResponse>(entity);
 
             return entity.ToQueryResponse(fornecedor);
         }

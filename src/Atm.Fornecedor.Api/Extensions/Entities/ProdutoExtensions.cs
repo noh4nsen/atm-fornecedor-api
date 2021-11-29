@@ -1,11 +1,22 @@
 ﻿using Atm.Fornecedor.Api.Features.Produto.Commands;
 using Atm.Fornecedor.Api.Features.Produto.Queries;
+using Atm.Fornecedor.Domain;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Atm.Fornecedor.Api.Extensions.Entities
 {
+    public class ProdutoProfile : Profile
+    {
+        public ProdutoProfile()
+        {
+            CreateMap<Produto, SelecionarProdutoQueryResponse>();
+            CreateMap<InserirProdutoCommand, Produto>();
+        }
+    }
+
     public static class ProdutoExtensions
     {
         public static SelecionarProdutoQueryResponse ToQueryResponse(this Domain.Produto entity, Domain.Fornecedor fornecedor)
