@@ -23,7 +23,7 @@ namespace Atm.Fornecedor.Api.Features.Produto.Queries
         public int QuantidadeEstoque { get; set; }
         public decimal ValorUnitario { get; set; }
         public decimal ValorCobrado { get; set; }
-        public Domain.Fornecedor Fonecedor { get; set; }
+        public Domain.Fornecedor Fornecedor { get; set; }
     }
 
     public class SelecionarProdutoByIdQueryHandler : IRequestHandler<SelecionarProdutoByIdQuery, SelecionarProdutoQueryResponse>
