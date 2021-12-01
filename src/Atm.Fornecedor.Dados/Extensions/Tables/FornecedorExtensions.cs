@@ -15,13 +15,16 @@ namespace Atm.Fornecedor.Dados.Extensions.Tables
                         .HasMaxLength(14);
             modelBuilder.Entity<Domain.Fornecedor>()
                         .Property(p => p.Telefone)
-                        .HasMaxLength(10);
+                        .HasMaxLength(11);
             modelBuilder.Entity<Domain.Fornecedor>()
                         .Property(p => p.Email)
                         .HasMaxLength(50);
             modelBuilder.Entity<Domain.Fornecedor>()
                         .Property(p => p.Tipo)
                         .HasMaxLength(10);
+            modelBuilder.Entity<Domain.Fornecedor>()
+                        .Property(p => p.Endereco)
+                        .HasMaxLength(150);
         }
     }
 }

@@ -14,9 +14,10 @@ namespace Atm.Fornecedor.Dados.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Nome = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Cnpj = table.Column<string>(type: "character varying(14)", maxLength: 14, nullable: true),
-                    Telefone = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: true),
+                    Telefone = table.Column<string>(type: "character varying(11)", maxLength: 11, nullable: true),
                     Email = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     Tipo = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: true),
+                    Endereco = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: true),
                     DataCadastro = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     DataAtualizacao = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
