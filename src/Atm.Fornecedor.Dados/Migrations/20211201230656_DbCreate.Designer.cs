@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Atm.Fornecedor.Dados.Migrations
 {
     [DbContext(typeof(DbContext))]
-    [Migration("20211201225206_DbCreate")]
+    [Migration("20211201230656_DbCreate")]
     partial class DbCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
