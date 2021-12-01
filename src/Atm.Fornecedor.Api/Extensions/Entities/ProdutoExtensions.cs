@@ -30,7 +30,7 @@ namespace Atm.Fornecedor.Api.Extensions.Entities
                 QuantidadeEstoque = entity.QuantidadeEstoque,
                 ValorUnitario = entity.ValorUnitario,
                 ValorCobrado = entity.ValorCobrado,
-                Fonecedor = fornecedor
+                Fornecedor = fornecedor
             };
         }
         public static Domain.Produto ToDomain(this InserirProdutoCommand request)

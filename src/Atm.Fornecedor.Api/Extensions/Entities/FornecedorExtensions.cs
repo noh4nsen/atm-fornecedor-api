@@ -17,6 +17,7 @@ namespace Atm.Fornecedor.Api.Extensions.Entities
                 Telefone = entity.Telefone,
                 Email = entity.Email,
                 Tipo = entity.Tipo,
+                Endereco = entity.Endereco,
                 DataCadastro = entity.DataCadastro,
                 DataAtualizacao = entity.DataAtualizacao
             };
@@ -30,7 +31,8 @@ namespace Atm.Fornecedor.Api.Extensions.Entities
                 Cnpj = request.Cnpj,
                 Telefone = request.Telefone,
                 Email = request.Email,
-                Tipo = request.Tipo
+                Tipo = request.Tipo,
+                Endereco = request.Endereco
             };
         }
 
@@ -50,6 +52,7 @@ namespace Atm.Fornecedor.Api.Extensions.Entities
             entity.Telefone = request.Telefone;
             entity.Email = request.Email;
             entity.Tipo = request.Tipo;
+            entity.Endereco = request.Endereco;
         }
 
         public static AtualizarFornecedorCommandResponse ToUpdateResponse(this Domain.Fornecedor entity)

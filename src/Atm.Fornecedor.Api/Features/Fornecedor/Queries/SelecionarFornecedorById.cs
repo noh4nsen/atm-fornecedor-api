@@ -21,6 +21,7 @@ namespace Atm.Fornecedor.Api.Features.Fornecedor.Queries
         public string Telefone { get; set; }
         public string Email { get; set; }
         public string Tipo { get; set; }
+        public string Endereco { get; set; }
         public DateTime DataCadastro { get; set; }
         public DateTime? DataAtualizacao { get; set; }
     }
