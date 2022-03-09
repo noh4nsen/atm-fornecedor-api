@@ -19,7 +19,7 @@ namespace Atm.Fornecedor.Api.Extensions.Entities
 
     public static class ProdutoExtensions
     {
-        public static SelecionarProdutoQueryResponse ToQueryResponse(this Domain.Produto entity, Domain.Fornecedor fornecedor)
+        public static SelecionarProdutoQueryResponse ToQueryResponse(this Produto entity, Domain.Fornecedor fornecedor)
         {
             return new SelecionarProdutoQueryResponse()
             {
@@ -28,22 +28,42 @@ namespace Atm.Fornecedor.Api.Extensions.Entities
                 Tipo = entity.Tipo,
                 Descricao = entity.Descricao,
                 QuantidadeEstoque = entity.QuantidadeEstoque,
-                ValorUnitario = entity.ValorUnitario,
-                ValorCobrado = entity.ValorCobrado,
+                ValorUnitario = entity.ValorAtual,
                 Fornecedor = fornecedor
             };
         }
-        public static Domain.Produto ToDomain(this InserirProdutoCommand request)
+        public static Produto ToDomain(this InserirProdutoCommand request)
         {
-            return new Domain.Produto()
+            Produto produto = new Produto()
+                                    {
+                                        Nome = request.Nome,
+                                        Tipo = request.Tipo,
+                                        Descricao = request.Descricao,
+                                        QuantidadeEstoque = request.QuantidadeEstoque,
+                                        HistoricoProduto = SetHistoricoProdutoList(new List<HistoricoProduto>(), request.ValorUnitario).ToList(),
+                                        FornecedorId = request.Fornecedor.Id
+                                    };
+            HistoricoProduto historicoProduto = produto.HistoricoProduto.FirstOrDefault();
+            produto.HistoricoProdutoAtual = historicoProduto.Id;
+            produto.ValorAtual = historicoProduto.ValorUnitario;
+            return produto;
+        }
+
+        private static IEnumerable<HistoricoProduto> SetHistoricoProdutoList(IList<HistoricoProduto> historicoProduto, decimal valorUnitario)
+        {
+            IList<HistoricoProduto> listaHistorico = historicoProduto;
+            if (listaHistorico.Count == 0)
+                listaHistorico.Add(GetNewHistoricoProduto(valorUnitario));
+           return listaHistorico.OrderByDescending(d => d.DataCadastro);  
+        }
+
+        public static HistoricoProduto GetNewHistoricoProduto(decimal valorUnitario)
+        {
+            return new HistoricoProduto
             {
-                Nome = request.Nome,
-                Tipo = request.Tipo,
-                Descricao = request.Descricao,
-                QuantidadeEstoque = request.QuantidadeEstoque,
-                ValorUnitario = request.ValorUnitario,
-                ValorCobrado = request.ValorCobrado,
-                FornecedorId = request.Fornecedor.Id
+                Id = Guid.NewGuid(),
+                ValorUnitario = valorUnitario,
+                DataCadastro = DateTime.Now
             };
         }
 
@@ -56,14 +76,15 @@ namespace Atm.Fornecedor.Api.Extensions.Entities
             };
         }
 
-        public static void Update(this AtualizarProdutoCommand request, Domain.Produto entity)
+        public static void Update(this AtualizarProdutoCommand request, Produto entity)
         {
             entity.Nome = request.Nome;
             entity.Tipo = request.Tipo;
             entity.Descricao = request.Descricao;
             entity.QuantidadeEstoque = request.QuantidadeEstoque;
-            entity.ValorUnitario = request.ValorUnitario;
-            entity.ValorCobrado = request.ValorCobrado;
+            entity.HistoricoProduto = SetHistoricoProdutoList(entity.HistoricoProduto.ToList(), request.ValorUnitario).ToList();
+            entity.HistoricoProdutoAtual = entity.HistoricoProduto.FirstOrDefault().Id;
+            entity.ValorAtual = request.ValorUnitario;
             entity.FornecedorId = request.Fornecedor.Id;
         }
 
@@ -83,12 +104,13 @@ namespace Atm.Fornecedor.Api.Extensions.Entities
             };
         }
 
-        public static IEnumerable<SelecionarProdutoQueryResponse> ToQueryResponse(this IEnumerable<Domain.Produto> listaProdutos, IEnumerable<Domain.Fornecedor> listaFornecedores)
+        public static IEnumerable<SelecionarProdutoQueryResponse> ToQueryResponse(this IEnumerable<Produto> listaProdutos, IEnumerable<Domain.Fornecedor> listaFornecedores)
         {
             IList<SelecionarProdutoQueryResponse> response = new List<SelecionarProdutoQueryResponse>();
             foreach (var entity in listaProdutos.Zip(listaFornecedores, Tuple.Create))
                 response.Add(entity.Item1.ToQueryResponse(entity.Item2));
             return response;
         }
+
     }
 }
