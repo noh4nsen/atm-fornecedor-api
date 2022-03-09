@@ -22,7 +22,6 @@ namespace Atm.Fornecedor.Api.Features.Produto.Queries
         public string Descricao { get; set; }
         public int QuantidadeEstoque { get; set; }
         public decimal ValorUnitario { get; set; }
-        public decimal ValorCobrado { get; set; }
         public Domain.Fornecedor Fornecedor { get; set; }
     }
 
@@ -50,8 +49,6 @@ namespace Atm.Fornecedor.Api.Features.Produto.Queries
             await _validator.ValidateDataAsync(request, entity);
 
             Domain.Fornecedor fornecedor = await _repositoryFornecedor.GetFirstAsync(f => f.Id.Equals(entity.FornecedorId));
-
-            //var teste = _mapper.Map<SelecionarProdutoQueryResponse>(entity);
 
             return entity.ToQueryResponse(fornecedor);
         }

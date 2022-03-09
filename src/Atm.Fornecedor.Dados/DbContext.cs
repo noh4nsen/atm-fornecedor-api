@@ -12,6 +12,8 @@ namespace Atm.Fornecedor.Dados
         public DbSet<Domain.Fornecedor> Fornecedor { get; set; }
         public DbSet<Produto> Produto { get; set; }
 
+        public DbSet<HistoricoProduto> HistoricoProduto { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.SetupConstraints();

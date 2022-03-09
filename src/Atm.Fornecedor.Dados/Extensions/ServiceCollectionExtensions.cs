@@ -12,6 +12,7 @@ namespace Atm.Fornecedor.Dados.Extensions
         {
             services.AddScoped(typeof(IRepository<Domain.Fornecedor>), typeof(Repository<Domain.Fornecedor>));
             services.AddScoped(typeof(IRepository<Produto>), typeof(Repository<Produto>));
+            services.AddScoped(typeof(IRepository<HistoricoProduto>), typeof(Repository<HistoricoProduto>));
         }
 
         internal static void SetupDbContext(this IServiceCollection services, string connectionString)

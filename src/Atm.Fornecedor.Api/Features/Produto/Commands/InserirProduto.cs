@@ -15,7 +15,6 @@ namespace Atm.Fornecedor.Api.Features.Produto.Commands
         public string Descricao { get; set; }
         public int QuantidadeEstoque { get; set; }
         public decimal ValorUnitario { get; set; }
-        public decimal ValorCobrado { get; set; }
         public Domain.Fornecedor Fornecedor { get; set; }
     }
 
@@ -67,10 +66,6 @@ namespace Atm.Fornecedor.Api.Features.Produto.Commands
                                          .WithMessage("Valor unitário é obrigatório")
                                          .GreaterThan(0)
                                          .WithMessage("Valor unitário deve ser maior que zero");
-            RuleFor(p => p.ValorCobrado).NotNull()
-                                        .WithMessage("Valor cobrado é obrigatório")
-                                        .GreaterThan(0)
-                                        .WithMessage("Valor cobrado deve ser maior que zero");
             RuleFor(p => p.Fornecedor.Id).NotEqual(Guid.Empty)
                                         .WithMessage("Id de Fornecedor é obrigatório");
         }
