@@ -30,6 +30,12 @@ namespace Atm.Fornecedor.Api.Features.Produto
             return Ok(await _mediator.Send(request));
         }
 
+        [HttpGet("lista-nomes")]
+        public async Task<ActionResult> Get([FromQuery] SelecionarProdutoNamesQuery request)
+        {
+            return Ok(await _mediator.Send(request));
+        }
+
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] InserirProdutoCommand request)
         {

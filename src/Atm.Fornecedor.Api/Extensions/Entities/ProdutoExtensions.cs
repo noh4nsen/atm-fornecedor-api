@@ -104,13 +104,28 @@ namespace Atm.Fornecedor.Api.Extensions.Entities
             };
         }
 
-        public static IEnumerable<SelecionarProdutoQueryResponse> ToQueryResponse(this IEnumerable<Produto> listaProdutos, IEnumerable<Domain.Fornecedor> listaFornecedores)
+        public static IEnumerable<SelecionarProdutoQueryResponse> ToQueryResponse(this IEnumerable<Produto> produtos, IEnumerable<Domain.Fornecedor> listaFornecedores)
         {
             IList<SelecionarProdutoQueryResponse> response = new List<SelecionarProdutoQueryResponse>();
-            foreach (var entity in listaProdutos.Zip(listaFornecedores, Tuple.Create))
+            foreach (var entity in produtos.Zip(listaFornecedores, Tuple.Create))
                 response.Add(entity.Item1.ToQueryResponse(entity.Item2));
             return response;
         }
 
+        public static IEnumerable<SelecionarProdutoNamesQueryResponse> ToNameResponse(this IEnumerable<Produto> produtos)
+        {
+            IList<SelecionarProdutoNamesQueryResponse> response = new List<SelecionarProdutoNamesQueryResponse>();
+            foreach (var produto in produtos)
+                response.Add(produto.ToNameResponse());
+            return response;
+        }
+
+        public static SelecionarProdutoNamesQueryResponse ToNameResponse(this Produto entity)
+        {
+            return new SelecionarProdutoNamesQueryResponse()
+            {
+                Nome = entity.Nome
+            };
+        }
     }
 }
