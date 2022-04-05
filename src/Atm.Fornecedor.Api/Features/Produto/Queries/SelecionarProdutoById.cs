@@ -22,7 +22,22 @@ namespace Atm.Fornecedor.Api.Features.Produto.Queries
         public string Descricao { get; set; }
         public int QuantidadeEstoque { get; set; }
         public decimal ValorUnitario { get; set; }
-        public Domain.Fornecedor Fornecedor { get; set; }
+        public SelecionarProdutoFornecedorQueryResponse Fornecedor { get; set; }
+        public DateTime DataCadastro { get; set; }
+        public DateTime? DataAtualizacao { get; set; }
+    }
+
+    public class SelecionarProdutoFornecedorQueryResponse
+    {
+        public Guid Id { get; set; }
+        public string Nome { get; set; }
+        public string Cnpj { get; set; }
+        public string Telefone { get; set; }
+        public string Email { get; set; }
+        public string Tipo { get; set; }
+        public string Endereco { get; set; }
+        public DateTime DataCadastro { get; set; }
+        public DateTime? DataAtualizacao { get; set; }
     }
 
     public class SelecionarProdutoByIdQueryHandler : IRequestHandler<SelecionarProdutoByIdQuery, SelecionarProdutoQueryResponse>
@@ -30,14 +45,12 @@ namespace Atm.Fornecedor.Api.Features.Produto.Queries
         private readonly IRepository<Domain.Produto> _repositoryProduto;
         private readonly IRepository<Domain.Fornecedor> _repositoryFornecedor;
         private readonly SelecionarProdutoByIdQueryValidator _validator;
-        private readonly IMapper _mapper;
 
-        public SelecionarProdutoByIdQueryHandler(IRepository<Domain.Produto> repositoryProduto, IRepository<Domain.Fornecedor> repositoryFornecedor, SelecionarProdutoByIdQueryValidator validator, IMapper mapper)
+        public SelecionarProdutoByIdQueryHandler(IRepository<Domain.Produto> repositoryProduto, IRepository<Domain.Fornecedor> repositoryFornecedor, SelecionarProdutoByIdQueryValidator validator)
         {
             _repositoryProduto = repositoryProduto;
             _repositoryFornecedor = repositoryFornecedor;
             _validator = validator;
-            _mapper = mapper;
         }
 
         public async Task<SelecionarProdutoQueryResponse> Handle(SelecionarProdutoByIdQuery request, CancellationToken cancellationToken)

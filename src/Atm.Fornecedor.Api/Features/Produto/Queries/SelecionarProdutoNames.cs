@@ -22,15 +22,13 @@ namespace Atm.Fornecedor.Api.Features.Produto.Queries
     public class SelecionarProdutoNamesQueryHandler : IRequestHandler<SelecionarProdutoNamesQuery, IEnumerable<SelecionarProdutoNamesQueryResponse>>
     {
         private readonly IRepository<Domain.Produto> _repository;
-        private readonly SelecionarProdutoNamesQueryValidator _validator;
+
         public SelecionarProdutoNamesQueryHandler
             (
-                IRepository<Domain.Produto> repository,
-                SelecionarProdutoNamesQueryValidator validator
+                IRepository<Domain.Produto> repository
             )
         {
             _repository = repository;
-            _validator = validator;
         }
 
         public async Task<IEnumerable<SelecionarProdutoNamesQueryResponse>> Handle(SelecionarProdutoNamesQuery request, CancellationToken cancellationToken)

@@ -29,9 +29,28 @@ namespace Atm.Fornecedor.Api.Extensions.Entities
                 Descricao = entity.Descricao,
                 QuantidadeEstoque = entity.QuantidadeEstoque,
                 ValorUnitario = entity.ValorAtual,
-                Fornecedor = fornecedor
+                Fornecedor = fornecedor.ToQueryFornecedorResponse(),
+                DataCadastro = entity.DataCadastro,
+                DataAtualizacao = entity.DataAtualizacao
             };
         }
+
+        public static SelecionarProdutoFornecedorQueryResponse ToQueryFornecedorResponse(this Domain.Fornecedor entity)
+        {
+            return new SelecionarProdutoFornecedorQueryResponse()
+            {
+                Id = entity.Id,
+                Nome = entity.Nome,
+                Cnpj = entity.Cnpj,
+                Telefone = entity.Telefone,
+                Email = entity.Email,
+                Tipo = entity.Tipo,
+                Endereco = entity.Endereco,
+                DataCadastro = entity.DataCadastro,
+                DataAtualizacao = entity.DataAtualizacao
+            };
+        }
+
         public static Produto ToDomain(this InserirProdutoCommand request)
         {
             Produto produto = new Produto()
