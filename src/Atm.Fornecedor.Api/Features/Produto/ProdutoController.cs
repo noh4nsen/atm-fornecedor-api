@@ -42,6 +42,12 @@ namespace Atm.Fornecedor.Api.Features.Produto
             return Ok(await _mediator.Send(request));
         }
 
+        [HttpPut("vender")]
+        public async Task<ActionResult> Put([FromBody] VenderProdutoCommand request)
+        {
+            return Ok(await _mediator.Send(request));
+        }
+
         [HttpPut]
         public async Task<ActionResult> Put([FromBody] AtualizarProdutoCommand request)
         {
