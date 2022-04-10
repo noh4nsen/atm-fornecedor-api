@@ -1,5 +1,6 @@
 ﻿using Atm.Fornecedor.Api.Features.Produto.Commands;
 using Atm.Fornecedor.Api.Features.Produto.Queries;
+using Atm.Fornecedor.Api.Helpers;
 using Atm.Fornecedor.Domain;
 using AutoMapper;
 using System;
@@ -84,7 +85,7 @@ namespace Atm.Fornecedor.Api.Extensions.Entities
             {
                 Id = Guid.NewGuid(),
                 ValorUnitario = valorUnitario,
-                DataCadastro = DateTime.Now
+                DataCadastro = DateHelper.GetLocalTime()
             };
         }
 
