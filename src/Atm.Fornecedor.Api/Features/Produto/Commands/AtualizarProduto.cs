@@ -11,6 +11,7 @@ namespace Atm.Fornecedor.Api.Features.Produto.Commands
     public class AtualizarProdutoCommand : IRequest<AtualizarProdutoCommandResponse>
     {
         public Guid Id { get; set; }
+        public string CodigoNCM { get; set; }
         public string Nome { get; set; }
         public string Tipo { get; set; }
         public string Descricao { get; set; }
@@ -74,16 +75,22 @@ namespace Atm.Fornecedor.Api.Features.Produto.Commands
     {
         public AtualizarProdutoCommandValidator()
         {
+            RuleFor(p => p.Id).NotEqual(Guid.Empty)
+                              .WithMessage("Id de Produto é obrigatório.");
+            RuleFor(p => p.CodigoNCM).NotEmpty()
+                                     .WithMessage("Código NCM de produto é obrigatório.");
             RuleFor(p => p.Nome).NotEmpty()
-                                .WithMessage("Nome de produto é obrigatório");
+                                .WithMessage("Nome de produto é obrigatório.");
             RuleFor(p => p.Tipo).NotNull()
-                                .WithMessage("Tipo do produto é obrigatório");
+                                .WithMessage("Tipo do produto é obrigatório.");
+            RuleFor(p => p.QuantidadeEstoque).GreaterThan(-1)
+                                             .WithMessage("Quantidade em estoque não pode ser negativo.");
             RuleFor(p => p.ValorUnitario).NotNull()
-                                         .WithMessage("Valor unitário é obrigatório")
+                                         .WithMessage("Valor unitário é obrigatório.")
                                          .GreaterThan(0)
-                                         .WithMessage("Valor unitário deve ser maior que zero");
+                                         .WithMessage("Valor unitário deve ser maior que zero.");
             RuleFor(p => p.Fornecedor.Id).NotEqual(Guid.Empty)
-                                        .WithMessage("Id de Fornecedor é obrigatório");
+                                        .WithMessage("Id de Fornecedor é obrigatório.");
         }
 
         public async Task ValidateDataAsync(AtualizarProdutoCommand request, Domain.Produto entity)
@@ -98,7 +105,7 @@ namespace Atm.Fornecedor.Api.Features.Produto.Commands
         {
             RuleFor(r => r.Id)
                 .Must(p => { return fornecedor != null; })
-                .WithMessage($"Fornecedor de id {fornecedor.Id} não encontrado.");
+                .WithMessage($"Fornecedor de id {request.Fornecedor.Id} não encontrado.");
             await this.ValidateAndThrowAsync(request);
         }
     }

@@ -24,6 +24,7 @@ namespace Atm.Fornecedor.Api.Extensions.Entities
             return new SelecionarProdutoQueryResponse()
             {
                 Id = entity.Id,
+                CodigoNCM = entity.CodigoNCM,
                 Nome = entity.Nome,
                 Tipo = entity.Tipo,
                 Descricao = entity.Descricao,
@@ -55,6 +56,7 @@ namespace Atm.Fornecedor.Api.Extensions.Entities
         {
             Produto produto = new Produto()
                                     {
+                                        CodigoNCM = request.CodigoNCM,
                                         Nome = request.Nome,
                                         Tipo = request.Tipo,
                                         Descricao = request.Descricao,
@@ -97,6 +99,7 @@ namespace Atm.Fornecedor.Api.Extensions.Entities
 
         public static void Update(this AtualizarProdutoCommand request, Produto entity)
         {
+            entity.CodigoNCM = request.CodigoNCM;
             entity.Nome = request.Nome;
             entity.Tipo = request.Tipo;
             entity.Descricao = request.Descricao;
@@ -145,6 +148,15 @@ namespace Atm.Fornecedor.Api.Extensions.Entities
             {
                 Nome = entity.Nome
             };
+        }
+
+        public static void VenderProduto(this VenderProdutoCommand request, Produto entity)
+        {
+            int novaQuantidade = entity.QuantidadeEstoque - request.Quantidade;
+            if (novaQuantidade >= 0)
+                entity.QuantidadeEstoque = novaQuantidade;
+            else
+                entity.QuantidadeEstoque = 0;
         }
     }
 }

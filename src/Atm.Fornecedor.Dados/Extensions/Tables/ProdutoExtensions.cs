@@ -8,6 +8,9 @@ namespace Atm.Fornecedor.Dados.Extensions.Tables
         internal static void SetupProduto(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Produto>()
+                        .Property(p => p.CodigoNCM)
+                        .HasMaxLength(8);
+            modelBuilder.Entity<Produto>()
                         .Property(p => p.Nome)
                         .HasMaxLength(50)
                         .IsRequired();
