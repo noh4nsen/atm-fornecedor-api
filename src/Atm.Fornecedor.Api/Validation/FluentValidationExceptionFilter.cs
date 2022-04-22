@@ -27,6 +27,7 @@ namespace Atm.Fornecedor.Api.Validation
             return details.Status switch
             {
                 StatusCodes.Status404NotFound => new NotFoundObjectResult(details),
+                StatusCodes.Status401Unauthorized => new UnauthorizedObjectResult(details),
                 _ => new BadRequestObjectResult(details),
             };
         }
