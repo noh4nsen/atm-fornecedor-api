@@ -33,7 +33,7 @@ namespace Atm.Fornecedor.Api.Features.Fornecedor
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] InserirFornecedorCommand request)
         {
-            return Ok(await _mediator.Send(request));
+            return Created("/fornecedor", await _mediator.Send(request));
         }
 
         [HttpPut]

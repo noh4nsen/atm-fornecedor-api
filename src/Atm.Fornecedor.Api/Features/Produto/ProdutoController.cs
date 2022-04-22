@@ -39,7 +39,7 @@ namespace Atm.Fornecedor.Api.Features.Produto
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] InserirProdutoCommand request)
         {
-            return Ok(await _mediator.Send(request));
+            return Created("/produto", await _mediator.Send(request));
         }
 
         [HttpPut("vender")]
