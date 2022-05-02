@@ -34,11 +34,12 @@ namespace Atm.Fornecedor.Api.Features.Produto.Commands
             if (request == null)
                 throw new ArgumentNullException("Erro ao processar requisição");
 
-            Domain.Produto entity = await _repository.GetFirstAsync(p => p.Id.Equals(request.Id));
+            Domain.Produto entity = await _repository.GetFirstAsync(p => p.Id.Equals(request.Id), p => p.HistoricoProduto);
 
             await _validator.ValidateDataAsync(request, entity);
 
-            await _repository.RemoveAsync(entity);
+            entity.Ativo = false;
+            await _repository.UpdateAsync(entity);
             await _repository.SaveChangesAsync();
 
             return entity.ToRemoveResponse();
@@ -51,7 +52,7 @@ namespace Atm.Fornecedor.Api.Features.Produto.Commands
         {
             RuleFor(p => p.Id)
                 .NotEqual(Guid.Empty)
-                .WithMessage("Id de fornecedor é obrigatório");
+                .WithMessage("Id de produto é obrigatório");
         }
 
         public async Task ValidateDataAsync(RemoverProdutoCommand request, Domain.Produto entity)

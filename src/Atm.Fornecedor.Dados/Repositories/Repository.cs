@@ -67,6 +67,7 @@ namespace Atm.Fornecedor.Dados.Repositories
         public void SetInsertData(Entity entity)
         {
             entity.Id = Guid.NewGuid();
+            entity.Ativo = true;
             entity.DataCadastro = GetLocalTime();
             entity.DataAtualizacao = null;
         }
