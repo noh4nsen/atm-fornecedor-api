@@ -23,6 +23,10 @@ namespace Atm.Fornecedor.Dados.Extensions.Tables
                         .HasMaxLength(500);
             modelBuilder.Entity<Produto>()
                         .HasOne(p => p.Fornecedor);
+            modelBuilder.Entity<Produto>()
+                        .HasMany(p => p.HistoricoProduto)
+                        .WithOne(p => p.Produto)
+                        .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -25,6 +25,7 @@ namespace Atm.Fornecedor.Api.Extensions.Entities
             return new SelecionarProdutoQueryResponse()
             {
                 Id = entity.Id,
+                Ativo = entity.Ativo,
                 CodigoNCM = entity.CodigoNCM,
                 Nome = entity.Nome,
                 Tipo = entity.Tipo,

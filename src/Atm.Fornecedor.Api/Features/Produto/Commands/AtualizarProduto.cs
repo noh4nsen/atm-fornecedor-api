@@ -57,7 +57,7 @@ namespace Atm.Fornecedor.Api.Features.Produto.Commands
             await _validator.ValidateDataAsync(request, await _repositoryFornecedor.GetFirstAsync(f => f.Id.Equals(request.Fornecedor.Id)));
 
             Domain.HistoricoProduto historicoProduto = ProdutoExtensions.GetNewHistoricoProduto(request.ValorUnitario);
-            historicoProduto.produto = entity;
+            historicoProduto.Produto = entity;
             entity.HistoricoProduto.Add(historicoProduto);
             await _repositoryHistorico.AddAsync(historicoProduto);
             await _repositoryHistorico.SaveChangesAsync();

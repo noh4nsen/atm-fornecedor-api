@@ -17,6 +17,7 @@ namespace Atm.Fornecedor.Api.Features.Produto.Queries
     public class SelecionarProdutoQueryResponse
     {
         public Guid Id { get; set; }
+        public bool Ativo { get; set; }
         public string CodigoNCM { get; set; }
         public string Nome { get; set; }
         public string Tipo { get; set; }
